@@ -4,6 +4,7 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using PCLReflectionExtensions;
 using System;
 using System.Reflection;
 
@@ -35,7 +36,7 @@ namespace Wire
 
         public bool IsSurrogateFor(Type type)
         {
-            return From.GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
+            return From.IsAssignableFrom(type);
         }
     }
 }

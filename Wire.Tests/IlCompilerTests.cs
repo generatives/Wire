@@ -42,13 +42,14 @@ namespace Wire.Tests
         }
     }
 
+#if NET45
     public class IlCompilerTests
     {
         private static readonly FieldInfo BoolField = typeof(Dummy).GetField(nameof(Dummy.BoolField));
         private static readonly MethodInfo SetBool = typeof(Dummy).GetMethod(nameof(Dummy.SetBool));
         private static readonly MethodInfo SetStatic = typeof(Dummy).GetMethod(nameof(Dummy.SetStatic));
 
-        [Fact]
+        [TestMethod]
         public void CanCallStaticMethodUsingParameter()
         {
             var c = new IlCompiler<Action<Dummy>>();
@@ -57,10 +58,10 @@ namespace Wire.Tests
             var a = c.Compile();
             var dummy = new Dummy();
             a(dummy);
-            Assert.Equal(true, dummy.BoolField);
+            Assert.AreEqual(true, dummy.BoolField);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanCallInstanceMethodOnParameter()
         {
             var c = new IlCompiler<Action<Dummy>>();
@@ -69,11 +70,11 @@ namespace Wire.Tests
             var a = c.Compile();
             var dummy = new Dummy();
             a(dummy);
-            Assert.Equal(true, dummy.BoolField);
+            Assert.AreEqual(true, dummy.BoolField);
         }
 
 
-        [Fact]
+        [TestMethod]
         public void CanModifyParameter()
         {
             var c = new IlCompiler<Action<Dummy>>();
@@ -83,10 +84,10 @@ namespace Wire.Tests
             var a = c.Compile();
             var dummy = new Dummy();
             a(dummy);
-            Assert.Equal(true,dummy.BoolField);
+            Assert.AreEqual(true,dummy.BoolField);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanCreateEmptyMethodWithArguments()
         {
             var c = new IlCompiler<Action<bool>>();
@@ -94,7 +95,7 @@ namespace Wire.Tests
             a(true);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanCreateEmptyMethodWithReturnType()
         {
             var c = new IlCompiler<Func<bool>>();
@@ -102,10 +103,10 @@ namespace Wire.Tests
             c.Emit(b);
             var a = c.Compile();
             var res = a();
-            Assert.Equal(true,res);
+            Assert.AreEqual(true,res);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanReturnConstantString()
         {
             var c = new IlCompiler<Func<string>>();
@@ -113,10 +114,10 @@ namespace Wire.Tests
             c.Emit(b);
             var a = c.Compile();
             var res = a();
-            Assert.Equal("hello", res);
+            Assert.AreEqual("hello", res);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanCreateEmptyMethod()
         {
             var c = new IlCompiler<Action>();
@@ -124,7 +125,7 @@ namespace Wire.Tests
             a();
         }
 
-        [Fact]
+        [TestMethod]
         public void CanCreateObject()
         {
             var c = new IlCompiler<Func<Dummy>>();
@@ -134,7 +135,7 @@ namespace Wire.Tests
             a();
         }
 
-        [Fact]
+        [TestMethod]
         public void CanStoreBoolInField()
         {
             var c = new IlCompiler<Action>();
@@ -146,7 +147,7 @@ namespace Wire.Tests
             a();
         }
 
-        [Fact]
+        [TestMethod]
         public void CanCastToAndFromObject()
         {
             var c = new IlCompiler<Action>();
@@ -162,7 +163,7 @@ namespace Wire.Tests
             a();
         }
 
-        [Fact]
+        [TestMethod]
         public void CanCreateObjectAndStoreInVar()
         {
             var c = new IlCompiler<Action>();
@@ -175,7 +176,7 @@ namespace Wire.Tests
         }
 
 
-        [Fact]
+        [TestMethod]
         public void ReadSimulationFakeTupleString()
         {
             var value = new FakeTupleString("Hello");
@@ -192,11 +193,11 @@ namespace Wire.Tests
             var readAllFields = GetDelegate(type, fields, serializer);
 
             var x = (FakeTupleString)readAllFields(stream, session);
-            Assert.Equal(value.Item1, x.Item1);
+            Assert.AreEqual(value.Item1, x.Item1);
         }
 
 
-        [Fact]
+        [TestMethod]
         public void ReadSimulationOptionString()
         {
             var value = FSharpOption<string>.Some("abc");
@@ -212,10 +213,10 @@ namespace Wire.Tests
             var readAllFields = GetDelegate(type, fields, serializer);
 
             var x = (FSharpOption<string>)readAllFields(stream, session);
-            Assert.Equal(value.Value, x.Value);
+            Assert.AreEqual(value.Value, x.Value);
         }
 
-        [Fact]
+        [TestMethod]
         public void ReadSimulationTupleString()
         {
             var value = Tuple.Create("Hello");
@@ -232,10 +233,10 @@ namespace Wire.Tests
             var readAllFields = GetDelegate(type, fields, serializer);
 
             var x = (Tuple<string>)readAllFields(stream, session);
-            Assert.Equal(value.Item1, x.Item1);
+            Assert.AreEqual(value.Item1, x.Item1);
         }
 
-        [Fact]
+        [TestMethod]
         public void ReadSimulation()
         {
             var serializer = new Serializer(new SerializerOptions(knownTypes:new List<Type>() {typeof(Poco)}));
@@ -257,10 +258,10 @@ namespace Wire.Tests
             var readAllFields = GetDelegate(type, fields, serializer);
 
             var x = (Poco)readAllFields(stream, session);
-            Assert.Equal(poco.DateProp, x.DateProp);
-            Assert.Equal(poco.GuidProp, x.GuidProp);
-            Assert.Equal(poco.IntProp, x.IntProp);
-            Assert.Equal(poco.StringProp, x.StringProp);
+            Assert.AreEqual(poco.DateProp, x.DateProp);
+            Assert.AreEqual(poco.GuidProp, x.GuidProp);
+            Assert.AreEqual(poco.IntProp, x.IntProp);
+            Assert.AreEqual(poco.StringProp, x.StringProp);
         }
 
         private static ObjectReader GetDelegate(Type type, FieldInfo[] fields, Serializer serializer)
@@ -295,4 +296,5 @@ namespace Wire.Tests
             return readAllFields;
         }
     }
+#endif
 }

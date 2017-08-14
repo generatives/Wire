@@ -4,6 +4,7 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using PCLReflectionExtensions;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -21,17 +22,17 @@ namespace Wire.SerializerFactories
         {
             //TODO: check for constructor with IEnumerable<T> param
 
-            if (!type.GetTypeInfo().GetMethods().Any(m => m.Name == "AddRange" || m.Name == "Add"))
+            if (!type.GetMethods().Any(m => m.Name == "AddRange" || m.Name == "Add"))
                 return false;
 
-            if (type.GetTypeInfo().GetProperty("Count") == null)
+            if (type.GetProperty("Count") == null)
                 return false;
 
             var isGenericEnumerable = GetEnumerableType(type) != null;
             if (isGenericEnumerable)
                 return true;
 
-            if (typeof(ICollection).GetTypeInfo().IsAssignableFrom(type))
+            if (typeof(ICollection).IsAssignableFrom(type))
                 return true;
 
             return false;
@@ -46,12 +47,12 @@ namespace Wire.SerializerFactories
         {
             return type
                 .GetTypeInfo()
-                .GetInterfaces()
+                .ImplementedInterfaces
                 .Where(
                     intType =>
-                        intType.GetTypeInfo().IsGenericType &&
-                        intType.GetTypeInfo().GetGenericTypeDefinition() == typeof(IEnumerable<>))
-                .Select(intType => intType.GetTypeInfo().GetGenericArguments()[0])
+                        intType.IsGenericType() &&
+                        intType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                .Select(intType => intType.GetTypeInfo().GenericTypeArguments[0])
                 .FirstOrDefault();
         }
 
@@ -65,9 +66,9 @@ namespace Wire.SerializerFactories
             var elementType = GetEnumerableType(type) ?? typeof(object);
             var elementSerializer = serializer.GetSerializerByType(elementType);
 
-            var countProperty = type.GetTypeInfo().GetProperty("Count");
-            var addRange = type.GetTypeInfo().GetMethod("AddRange");
-            var add = type.GetTypeInfo().GetMethod("Add");
+            var countProperty = type.GetProperty("Count");
+            var addRange = type.GetMethod("AddRange");
+            var add = type.GetMethod("Add");
 
             Func<object, int> countGetter = o => (int) countProperty.GetValue(o);
 

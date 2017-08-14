@@ -1,5 +1,5 @@
-﻿using System.IO;
-using Xunit;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
 
 namespace Wire.Tests
 {
@@ -37,7 +37,7 @@ namespace Wire.Tests
 
         public void AssertMemoryStreamConsumed()
         {
-            Assert.Equal(_stream.Length, _stream.Position);
+            Assert.AreEqual(_stream.Length, _stream.Position);
         }
     }
 }

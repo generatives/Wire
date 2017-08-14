@@ -4,6 +4,7 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using PCLReflectionExtensions;
 using System;
 using System.IO;
 using System.Linq.Expressions;
@@ -32,7 +33,7 @@ namespace Wire.ValueSerializers
         public virtual void EmitWriteValue(ICompiler<ObjectWriter> c, int stream, int fieldValue, int session)
         {
             var converted = c.Convert<object>(fieldValue);
-            var method = typeof(ValueSerializer).GetTypeInfo().GetMethod(nameof(WriteValue));
+            var method = typeof(ValueSerializer).GetMethod(nameof(WriteValue));
 
             //write it to the value serializer
             var vs = c.Constant(this);
@@ -42,7 +43,7 @@ namespace Wire.ValueSerializers
         public virtual int EmitReadValue([NotNull] ICompiler<ObjectReader> c, int stream, int session,
             [NotNull] FieldInfo field)
         {
-            var method = typeof(ValueSerializer).GetTypeInfo().GetMethod(nameof(ReadValue));
+            var method = typeof(ValueSerializer).GetMethod(nameof(ReadValue));
             var ss = c.Constant(this);
             var read = c.Call(method, ss, stream, session);
             read = c.Convert(read, field.FieldType);

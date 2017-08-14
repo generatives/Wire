@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using PCLReflectionExtensions;
 #if SERIALIZATION
 using System.Runtime.Serialization;
 
@@ -68,18 +69,18 @@ namespace Wire.Extensions
 
 #if !SERIALIZATION
     //HACK: the GetUnitializedObject actually exists in .NET Core, its just not public
-        private static readonly Func<Type, object> getUninitializedObjectDelegate = (Func<Type, object>)
-            typeof(string)
-                .GetTypeInfo()
-                .Assembly
-                .GetType("System.Runtime.Serialization.FormatterServices")
-                ?.GetTypeInfo()
-                ?.GetMethod("GetUninitializedObject", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
-                ?.CreateDelegate(typeof(Func<Type, object>));
+        //private static readonly Func<Type, object> getUninitializedObjectDelegate = (Func<Type, object>)
+        //    typeof(string)
+        //        .GetTypeInfo()
+        //        .Assembly
+        //        .GetType("System.Runtime.Serialization.FormatterServices")
+        //        ?.GetMethod("GetUninitializedObject", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
+        //        ?.CreateDelegate(typeof(Func<Type, object>));
 
         public static object GetEmptyObject(this Type type)
         {
-            return getUninitializedObjectDelegate(type);
+            //return getUninitializedObjectDelegate(type);
+            return ObjectCreator.CreateInstanceOf(type.GetTypeInfo());
         }
 #else
         public static object GetEmptyObject(this Type type)
@@ -155,12 +156,12 @@ namespace Wire.Extensions
 
         public static bool IsNullable(this Type type)
         {
-            return type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+            return type.IsGenericType() && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
         public static Type GetNullableElement(this Type type)
         {
-            return type.GetTypeInfo().GetGenericArguments()[0];
+            return type.GenericTypeArguments[0];
         }
 
         public static bool IsFixedSizeType(this Type type)

@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.IO;
 using System.Threading;
 using Wire.ValueSerializers;
-using Xunit;
 
 namespace Wire.Tests
 {
+    [TestClass]
     public class UnsupportedTypeSerializerTests : TestBase
     {
-        [Fact]
+        [TestMethod]
         public void DoUnsupportedTypesNotHangOnExceptions()
         {
             var th = new Thread(() =>
@@ -34,11 +35,11 @@ namespace Wire.Tests
             if (!th.Join(TimeSpan.FromSeconds(5)))
             {
                 th.Abort();
-                Assert.True(false, "Serializer did not complete in 5 seconds");
+                Assert.IsTrue(false, "Serializer did not complete in 5 seconds");
             }
         }
 
-        [Fact]
+        [TestMethod]
         public void DoUnsupportedTypesThrowErrors()
         {
             var serializer = new Serializer();
@@ -49,7 +50,7 @@ namespace Wire.Tests
             }
             catch (UnsupportedTypeException)
             {
-                Assert.True(true);
+                Assert.IsTrue(true);
             }
         }
     }

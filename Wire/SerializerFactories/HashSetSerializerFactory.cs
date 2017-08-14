@@ -4,6 +4,7 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using PCLReflectionExtensions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -21,8 +22,8 @@ namespace Wire.SerializerFactories
 
         private static bool IsInterface(Type type)
         {
-            return type.GetTypeInfo().IsGenericType &&
-                   type.GetTypeInfo().GetGenericTypeDefinition() == typeof(HashSet<>);
+            return type.IsGenericType() &&
+                   type.GetGenericTypeDefinition() == typeof(HashSet<>);
         }
 
         public override bool CanDeserialize(Serializer serializer, Type type) => IsInterface(type);
@@ -33,10 +34,10 @@ namespace Wire.SerializerFactories
             var preserveObjectReferences = serializer.Options.PreserveObjectReferences;
             var ser = new ObjectSerializer(type);
             typeMapping.TryAdd(type, ser);
-            var elementType = type.GetTypeInfo().GetGenericArguments()[0];
+            var elementType = type.GetGenericArguments()[0];
             var elementSerializer = serializer.GetSerializerByType(elementType);
-            var readGeneric = GetType().GetTypeInfo().GetMethod(nameof(ReadHashSet), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elementType);
-            var writeGeneric = GetType().GetTypeInfo().GetMethod(nameof(WriteHashSet), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elementType);
+            var readGeneric = GetType().GetMethod(nameof(ReadHashSet), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elementType);
+            var writeGeneric = GetType().GetMethod(nameof(WriteHashSet), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elementType);
 
             ObjectReader reader = (stream, session) =>
             {

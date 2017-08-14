@@ -4,6 +4,7 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using PCLReflectionExtensions;
 using System;
 using System.Reflection;
 using System.Reflection.Emit;

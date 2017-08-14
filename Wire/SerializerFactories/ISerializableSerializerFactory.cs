@@ -5,6 +5,7 @@
 // //-----------------------------------------------------------------------
 
 #if SERIALIZATION
+using PCLReflectionExtensions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -43,8 +44,8 @@ namespace Wire.SerializerFactories
                 }
 
                 var ctor = type.GetConstructor(BindingFlagsEx.All, null,
-                    new[] {typeof(SerializationInfo), typeof(StreamingContext)}, null);
-                var instance = ctor.Invoke(new object[] {info, new StreamingContext()});
+                    new[] { typeof(SerializationInfo), typeof(StreamingContext) }, null);
+                var instance = ctor.Invoke(new object[] { info, new StreamingContext() });
                 var deserializationCallback = instance as IDeserializationCallback;
                 deserializationCallback?.OnDeserialization(this);
                 return instance;

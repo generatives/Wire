@@ -1,16 +1,17 @@
-﻿using System;
-using Xunit;
+﻿using DeepEqual.Syntax;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Wire.Tests
 {
-    
+    [TestClass]
     public class CustomObjectTests : TestBase
     {
         private class PrivateType
         {
             public int IntProp { get; set; }
         }
-        [Fact]
+        [TestMethod]
         public void CanSerializePrivateType()
         {
             var expected = new PrivateType()
@@ -20,20 +21,20 @@ namespace Wire.Tests
             Serialize(expected);
             Reset();
             var actual = Deserialize<PrivateType>();
-            Assert.Equal(expected.IntProp, actual.IntProp);
+            Assert.AreEqual(expected.IntProp, actual.IntProp);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeTypeObject()
         {
             var expected = typeof(ArgumentException);
             Serialize(expected);
             Reset();
             var actual = Deserialize<Type>();
-            Assert.Equal(expected, actual);
+            expected.ShouldDeepEqual(actual);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeNull()
         {
             var expected = new Something
@@ -44,25 +45,25 @@ namespace Wire.Tests
             Serialize(expected);
             Reset();
             var actual = Deserialize<Something>();
-            Assert.Equal(expected, actual);
+            expected.ShouldDeepEqual(actual);
         }
 
 
         //this uses a lightweight serialization of exceptions to conform to .NET core's lack of ISerializable
         //all custom exception information will be lost.
         //only message, inner exception, stacktrace and the bare minimum will be preserved.
-        [Fact]
+        [TestMethod]
         public void CanSerializeException()
         {
             var expected = new Exception("hello wire");
             Serialize(expected);
             Reset();
             var actual = Deserialize<Exception>();
-            Assert.Equal(expected.StackTrace, actual.StackTrace);
-            Assert.Equal(expected.Message, actual.Message);
+            Assert.AreEqual(expected.StackTrace, actual.StackTrace);
+            Assert.AreEqual(expected.Message, actual.Message);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializePolymorphicObject()
         {
             var expected = new Something
@@ -76,10 +77,10 @@ namespace Wire.Tests
             Serialize(expected);
             Reset();
             var actual = Deserialize<Something>();
-            Assert.Equal(expected, actual);
+            expected.ShouldDeepEqual(actual);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeStruct()
         {
             var expected = new StuctValue
@@ -92,10 +93,10 @@ namespace Wire.Tests
             Serialize(expected);
             Reset();
             var actual = Deserialize<StuctValue>();
-            Assert.Equal(expected, actual);
+            expected.ShouldDeepEqual(actual);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeObject()
         {
             var expected = new Something
@@ -110,10 +111,10 @@ namespace Wire.Tests
             Serialize(expected);
             Reset();
             var actual = Deserialize<Something>();
-            Assert.Equal(expected, actual);
+            expected.ShouldDeepEqual(actual);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeObjects()
         {
             var expected1 = new Something
@@ -132,22 +133,22 @@ namespace Wire.Tests
             Serialize(expected2);
             Serialize(expected3);
             Reset();
-            Assert.Equal(expected1, Deserialize<Something>());
-            Assert.Equal(expected2, Deserialize<Something>());
-            Assert.Equal(expected3, Deserialize<Something>());
+            Assert.AreEqual(expected1, Deserialize<Something>());
+            Assert.AreEqual(expected2, Deserialize<Something>());
+            Assert.AreEqual(expected3, Deserialize<Something>());
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeTuple()
         {
             var expected = Tuple.Create("hello");
             Serialize(expected);
             Reset();
             var actual = Deserialize<Tuple<string>>();
-            Assert.Equal(expected, actual);
+            expected.ShouldDeepEqual(actual);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanEmptyObject()
         {
             var expected = new Empty();
@@ -155,10 +156,10 @@ namespace Wire.Tests
             Serialize(expected);
             Reset();
             var actual = Deserialize<Empty>();
-            Assert.Equal(expected, actual);
+            expected.ShouldDeepEqual(actual);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeObjectsKnownTypes()
         {
             CustomInit(new Serializer(new SerializerOptions(knownTypes:new[] {typeof(Something)})));
@@ -178,9 +179,9 @@ namespace Wire.Tests
             Serialize(expected2);
             Serialize(expected3);
             Reset();
-            Assert.Equal(expected1, Deserialize<Something>());
-            Assert.Equal(expected2, Deserialize<Something>());
-            Assert.Equal(expected3, Deserialize<Something>());
+            Assert.AreEqual(expected1, Deserialize<Something>());
+            Assert.AreEqual(expected2, Deserialize<Something>());
+            Assert.AreEqual(expected3, Deserialize<Something>());
         }
     }
 }

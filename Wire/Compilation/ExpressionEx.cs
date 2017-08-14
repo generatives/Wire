@@ -4,6 +4,7 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using PCLReflectionExtensions;
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -21,14 +22,14 @@ namespace Wire.Compilation
 
         public static Expression GetNewExpression(Type type)
         {
-            if (type.GetTypeInfo().IsValueType)
+            if (type.IsValueType())
             {
                 var x = Expression.Constant(Activator.CreateInstance(type));
                 var convert = Expression.Convert(x, typeof(object));
                 return convert;
             }
 #if SERIALIZATION
-            var defaultCtor = type.GetTypeInfo().GetConstructor(new Type[] {});
+            var defaultCtor = type.GetConstructor(new Type[] {});
             var il = defaultCtor?.GetMethodBody()?.GetILAsByteArray();
             var sideEffectFreeCtor = il != null && il.Length <= 8; //this is the size of an empty ctor
             if (sideEffectFreeCtor)
@@ -37,7 +38,7 @@ namespace Wire.Compilation
                 return Expression.New(defaultCtor);
             }
 #endif
-            var emptyObjectMethod = typeof(TypeEx).GetTypeInfo().GetMethod(nameof(TypeEx.GetEmptyObject));
+            var emptyObjectMethod = typeof(TypeEx).GetMethod(nameof(TypeEx.GetEmptyObject));
             var emptyObject = Expression.Call(null, emptyObjectMethod, type.ToConstant());
 
             return emptyObject;

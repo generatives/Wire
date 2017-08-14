@@ -1,17 +1,14 @@
-﻿// //-----------------------------------------------------------------------
+﻿// //----------------------------------------------------------------------//------------------------------------------------------------------------
 // // <copyright file="ReflectionEx.cs" company="Asynkron HB">
 // //     Copyright (C) 2015-2016 Asynkron HB All rights reserved
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using PCLReflectionExtensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
-#if SERIALIZATION
-
-#endif
 
 namespace Wire.Extensions
 {
@@ -35,7 +32,7 @@ namespace Wire.Extensions
             {
                 var tfields =
                     current
-                        .GetTypeInfo()
+                        
                         .GetFields(BindingFlagsEx.All)
 #if SERIALIZATION
                         .Where(f => !f.IsDefined(typeof(NonSerializedAttribute)))

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.IO;
 using Xunit;
 
 namespace Wire.Tests
 {
-    
+    [TestClass]
     public class Bugs
     {
 
@@ -33,7 +34,7 @@ namespace Wire.Tests
             }
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeMessageWithByte()
         {
             var stream = new MemoryStream();
@@ -44,7 +45,7 @@ namespace Wire.Tests
             var res = serializer.Deserialize(stream);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerialieCustomType_bug()
         {
             var stream = new MemoryStream();

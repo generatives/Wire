@@ -4,6 +4,7 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using PCLReflectionExtensions;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Wire.SerializerFactories
 
         public override bool CanDeserialize(Serializer serializer, Type type)
         {
-            var surrogate = serializer.Options.Surrogates.FirstOrDefault(s => s.To.GetTypeInfo().IsAssignableFrom(type));
+            var surrogate = serializer.Options.Surrogates.FirstOrDefault(s => s.To.IsAssignableFrom(type));
             return surrogate != null;
         }
 
@@ -27,7 +28,7 @@ namespace Wire.SerializerFactories
         {
             var surrogate =
                 serializer.Options.Surrogates.FirstOrDefault(
-                    s => s.To.GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()));
+                    s => s.To.IsAssignableFrom(type));
             var objectSerializer = new ObjectSerializer(type);
             // ReSharper disable once PossibleNullReferenceException
             var fromSurrogateSerializer = new FromSurrogateSerializer(surrogate.FromSurrogate, objectSerializer);

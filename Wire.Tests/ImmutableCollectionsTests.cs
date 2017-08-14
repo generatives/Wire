@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using DeepEqual.Syntax;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Xunit;
 
 namespace Wire.Tests
 {
-    
+    [TestClass]
     public class ImmutableCollectionTests : TestBase
     {
-        [Fact]
+        [TestMethod]
         public void CanSerializeImmutableHashSet()
         {
             var expected = ImmutableHashSet.CreateRange(new[]
@@ -30,10 +31,10 @@ namespace Wire.Tests
             Serialize(expected);
             Reset();
             var actual = Deserialize<ImmutableHashSet<Something>>();
-            Assert.Equal(expected.ToList(), actual.ToList());
+            expected.ToList().ShouldDeepEqual(actual.ToList());
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeImmutableSortedSet()
         {
             var expected = ImmutableSortedSet.CreateRange(new[]
@@ -46,10 +47,10 @@ namespace Wire.Tests
             Serialize(expected);
             Reset();
             var actual = Deserialize<ImmutableSortedSet<string>>();
-            Assert.Equal(expected.ToList(), actual.ToList());
+            expected.ToList().ShouldDeepEqual(actual.ToList());
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeImmutableDictionary()
         {
             var expected = ImmutableDictionary.CreateRange(new Dictionary<string, Something>
@@ -72,10 +73,10 @@ namespace Wire.Tests
             Serialize(expected);
             Reset();
             var actual = Deserialize<ImmutableDictionary<string, Something>>();
-            Assert.Equal(expected.ToList(), actual.ToList());
+            expected.ToList().ShouldDeepEqual(actual.ToList());
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeImmutableQueue()
         {
             var expected = ImmutableQueue.CreateRange(new[]
@@ -98,10 +99,10 @@ namespace Wire.Tests
             Serialize(expected);
             Reset();
             var actual = Deserialize<ImmutableQueue<Something>>();
-            Assert.Equal(expected.ToList(), actual.ToList());
+            expected.ToList().ShouldDeepEqual(actual.ToList());
         }
 
-        //[Fact]
+        //[TestMethod]
         public void CanSerializeImmutableStack()
         {
             var expected = ImmutableStack.CreateRange(new[]
@@ -123,10 +124,10 @@ namespace Wire.Tests
             Serialize(expected);
             Reset();
             var actual = Deserialize<ImmutableStack<Something>>();
-            Assert.Equal(expected.ToList(), actual.ToList());
+            expected.ToList().ShouldDeepEqual(actual.ToList());
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeImmutableArray()
         {
             var expected = ImmutableArray.CreateRange(new[]
@@ -149,10 +150,10 @@ namespace Wire.Tests
             Serialize(expected);
             Reset();
             var actual = Deserialize<ImmutableArray<Something>>();
-            Assert.Equal(expected.ToList(), actual.ToList());
+            expected.ToList().ShouldDeepEqual(actual.ToList());
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeImmutableList()
         {
             var expected = ImmutableList.CreateRange(new[]
@@ -175,7 +176,7 @@ namespace Wire.Tests
             Serialize(expected);
             Reset();
             var actual = Deserialize<ImmutableList<Something>>();
-            Assert.Equal(expected.ToList(), actual.ToList());
+            expected.ToList().ShouldDeepEqual(actual.ToList());
         }
     }
 }

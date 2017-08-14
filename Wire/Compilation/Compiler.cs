@@ -4,6 +4,7 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using PCLReflectionExtensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -126,7 +127,7 @@ namespace Wire.Compilation
             if (field.IsInitOnly)
             {
                 //TODO: field is readonly, can we set it via IL or only via reflection
-                var method = typeof(FieldInfo).GetTypeInfo()
+                var method = typeof(FieldInfo)
                     .GetMethod(nameof(FieldInfo.SetValue), new[] {typeof(object), typeof(object)});
                 var fld = Constant(field);
                 var valueToObject = Convert<object>(value);

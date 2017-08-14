@@ -5,72 +5,74 @@ using Microsoft.FSharp.Core;
 using Wire.FSharpTestTypes;
 using Microsoft.FSharp.Quotations;
 using Microsoft.FSharp.Control;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DeepEqual.Syntax;
 
 namespace Wire.Tests
 {
+    [TestClass]
     public class FSharpTests : TestBase
     {
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeFSharpMap()
         {
             var expected = TestMap.createRecordWithMap;
             Serialize(expected);
             Reset();
             var actual = Deserialize<object>();
-            Assert.Equal(expected, actual);
+            expected.ShouldDeepEqual(actual);
         }
 
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeFSharpList()
         {
             var expected = ListModule.OfArray(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 });
             Serialize(expected);
             Reset();
             var actual = Deserialize<object>();
-            Assert.Equal(expected, actual);
+            expected.ShouldDeepEqual(actual);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeSimpleDU()
         {
             var expected = DU1.NewA(1);
             Serialize(expected);
             Reset();
             var actual = Deserialize<object>();
-            Assert.Equal(expected,actual);
+            Assert.AreEqual(expected,actual);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeNestedDU()
         {
             var expected = DU2.NewC(DU1.NewA(1));
             Serialize(expected);
             Reset();
             var actual = Deserialize<object>();
-            Assert.Equal(expected, actual);
+            expected.ShouldDeepEqual(actual);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeOptionalDU()
         {
             var expected = DU2.NewE(FSharpOption<DU1>.Some(DU1.NewA(1)));
             Serialize(expected);
             Reset();
             var actual = Deserialize<object>();
-            Assert.Equal(expected, actual);
+            expected.ShouldDeepEqual(actual);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeOption()
         {
             var expected = FSharpOption<string>.Some("hello");
             Serialize(expected);
             Reset();
             var actual = Deserialize<object>();
-            Assert.Equal(expected, actual);
+            expected.ShouldDeepEqual(actual);
         }
 
         public class FooActor : UntypedActor
@@ -80,30 +82,30 @@ namespace Wire.Tests
             }
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeUser()
         {
                 var expected = new User("foo", new FSharpOption<string>(null), "hello");
                 Serialize(expected);
                 Reset();
                 var actual = Deserialize<User>();
-               // Assert.Equal(expected, actual);
-                Assert.Equal(expected.aref, actual.aref);
-                Assert.Equal(expected.name, actual.name);
-                Assert.Equal(expected.connections, actual.connections);
+               // Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected.aref, actual.aref);
+                Assert.AreEqual(expected.name, actual.name);
+                Assert.AreEqual(expected.connections, actual.connections);
 
         }
 
         //FIXME: make F# quotations and Async serializable
-        //[Fact]
+        //[TestMethod]
         public void CanSerializeQuotation()
         {
             var expected = TestQuotations.Quotation;
             Serialize(expected);
             Reset();
             var actual = Deserialize<FSharpExpr<FSharpFunc<int, FSharpAsync<int>>>>();
-            // Assert.Equal(expected, actual);
-            Assert.Equal(expected, actual);
+            // expected.ShouldDeepEqual(actual);
+            expected.ShouldDeepEqual(actual);
         }
     }
 }

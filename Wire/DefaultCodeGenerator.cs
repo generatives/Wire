@@ -4,6 +4,7 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using PCLReflectionExtensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,7 +47,7 @@ namespace Wire
             if (serializer.Options.PreserveObjectReferences)
             {
                 var trackDeserializedObjectMethod =
-                    typeof(DeserializerSession).GetTypeInfo()
+                    typeof(DeserializerSession)
                         .GetMethod(nameof(DeserializerSession.TrackDeserializedObject));
 
                 c.EmitCall(trackDeserializedObjectMethod, session, target);
@@ -81,7 +82,7 @@ namespace Wire
             if (preallocatedBufferSize > 0)
             {
                 EmitPreallocatedBuffer(c, preallocatedBufferSize, session,
-                    typeof(DeserializerSession).GetTypeInfo().GetMethod(nameof(DeserializerSession.GetBuffer)));
+                    typeof(DeserializerSession).GetMethod(nameof(DeserializerSession.GetBuffer)));
             }
 
             for (var i = 0; i < fieldsArray.Length; i++)
@@ -100,7 +101,7 @@ namespace Wire
                 }
                 else
                 {
-                    var method = typeof(StreamEx).GetTypeInfo().GetMethod(nameof(StreamEx.ReadObject));
+                    var method = typeof(StreamEx).GetMethod(nameof(StreamEx.ReadObject));
                     read = c.StaticCall(method, stream, session);
                     read = c.Convert(read, field.FieldType);
                 }
@@ -140,7 +141,7 @@ namespace Wire
             if (serializer.Options.PreserveObjectReferences)
             {
                 var method =
-                    typeof(SerializerSession).GetTypeInfo().GetMethod(nameof(SerializerSession.TrackSerializedObject));
+                    typeof(SerializerSession).GetMethod(nameof(SerializerSession.TrackSerializedObject));
 
                 c.EmitCall(method, session, target);
             }
@@ -153,7 +154,7 @@ namespace Wire
             if (preallocatedBufferSize > 0)
             {
                 EmitPreallocatedBuffer(c, preallocatedBufferSize, session,
-                    typeof(SerializerSession).GetTypeInfo().GetMethod("GetBuffer"));
+                    typeof(SerializerSession).GetMethod("GetBuffer"));
             }
 
             for (var i = 0; i < fieldsArray.Length; i++)
@@ -186,7 +187,7 @@ namespace Wire
                     var vs = c.Constant(valueSerializer);
                     var vt = c.Constant(valueType);
 
-                    var method = typeof(StreamEx).GetTypeInfo().GetMethod(nameof(StreamEx.WriteObject));
+                    var method = typeof(StreamEx).GetMethod(nameof(StreamEx.WriteObject));
 
                     c.EmitStaticCall(method, stream, converted, vt, vs, preserveReferences, session);
                 }

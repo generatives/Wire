@@ -4,6 +4,7 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using PCLReflectionExtensions;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -24,7 +25,7 @@ namespace Wire.Compilation
             var parametersWithSelf = GetParameterTypesWithSelf(invoke, selfType);
             var returnType = invoke.ReturnType;
             var method = new DynamicMethod("foo", MethodAttributes.Public | MethodAttributes.Static,
-                CallingConventions.Standard, returnType, parametersWithSelf, typeof(string).Module, true);
+                CallingConventions.Standard, returnType, parametersWithSelf, typeof(string).GetTypeInfo().Module, true);
 
             var il = method.GetILGenerator();
             var context = new IlCompilerContext(il, selfType);
@@ -45,7 +46,10 @@ namespace Wire.Compilation
             }
 
             //emit il code
-            LazyEmits.ForEach(e => e(context));
+            foreach(var e in LazyEmits)
+            {
+                e(context);
+            }
 
             //we need to return
             context.Il.Emit(OpCodes.Ret);

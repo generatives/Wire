@@ -4,6 +4,7 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using PCLReflectionExtensions;
 using System;
 using System.Collections.Concurrent;
 using System.Reflection;
@@ -16,7 +17,7 @@ namespace Wire.SerializerFactories
     {
         public override bool CanSerialize(Serializer serializer, Type type)
         {
-            return type.GetTypeInfo().IsSubclassOf(typeof(PropertyInfo));
+            return type.IsSubclassOf(typeof(PropertyInfo));
         }
 
         public override bool CanDeserialize(Serializer serializer, Type type)
@@ -35,7 +36,7 @@ namespace Wire.SerializerFactories
                 var owner = stream.ReadObject(session) as Type;
 
 #if NET45
-                var property = owner.GetTypeInfo()
+                var property = owner
                     .GetProperty(name,
                         BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                 return property;

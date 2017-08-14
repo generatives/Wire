@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace Wire.Tests
 {
-   
+    [TestClass]
     public class InterfaceTests
     {
         public class Bar
@@ -27,7 +27,7 @@ namespace Wire.Tests
             public string B { get; set; }
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeInterfaceField()
         {
             var b = new Bar

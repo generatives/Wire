@@ -1,6 +1,6 @@
-﻿using System.IO;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
 using System.Runtime.Serialization;
-using Xunit;
 
 namespace Wire.Tests
 {
@@ -53,9 +53,10 @@ namespace Wire.Tests
         }
     }
 
+    [TestClass]
     public class SurrogateTests
     {
-        [Fact]
+        [TestMethod]
         public void CanSerializeWithSurrogate()
         {
             var surrogateHasBeenInvoked = false;
@@ -77,11 +78,11 @@ namespace Wire.Tests
             serializer.Serialize(foo, stream);
             stream.Position = 0;
             var actual = serializer.Deserialize<Foo>(stream);
-            Assert.Equal(foo.Bar, actual.Bar);
-            Assert.True(surrogateHasBeenInvoked);
+            Assert.AreEqual(foo.Bar, actual.Bar);
+            Assert.IsTrue(surrogateHasBeenInvoked);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeWithInterfaceSurrogate()
         {
             var surrogateHasBeenInvoked = false;
@@ -103,8 +104,8 @@ namespace Wire.Tests
             serializer.Serialize(foo, stream);
             stream.Position = 0;
             var actual = serializer.Deserialize<Foo>(stream);
-            Assert.Equal(foo.Bar, actual.Bar);
-            Assert.True(surrogateHasBeenInvoked);
+            Assert.AreEqual(foo.Bar, actual.Bar);
+            Assert.IsTrue(surrogateHasBeenInvoked);
         }
     }
 }

@@ -4,6 +4,7 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using PCLReflectionExtensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,7 +99,7 @@ namespace Wire.Compilation
         public int CastOrUnbox(int value, Type type)
         {
             var valueExp = _expressions[value];
-            if (type.IsValueType)
+            if (type.IsValueType())
                 _expressions.Add(new IlUnbox(type, valueExp));
             else
                 _expressions.Add(new IlCastClass(type, valueExp));
@@ -171,7 +172,7 @@ namespace Wire.Compilation
         public int Convert(int value, Type type)
         {
             var valueExp = _expressions[value];
-            if (valueExp.Type().IsValueType)
+            if (valueExp.Type().IsValueType())
                 _expressions.Add(new IlBox(valueExp.Type(), valueExp));
             else
                 _expressions.Add(new IlCastClass(type, valueExp));

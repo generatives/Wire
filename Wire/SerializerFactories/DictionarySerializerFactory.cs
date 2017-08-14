@@ -4,6 +4,7 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using PCLReflectionExtensions;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -23,11 +24,11 @@ namespace Wire.SerializerFactories
         {
             return type
                 .GetTypeInfo()
-                .GetInterfaces()
+                .ImplementedInterfaces
                 .Select(
                     t =>
-                        t.GetTypeInfo().IsGenericType &&
-                        t.GetTypeInfo().GetGenericTypeDefinition() == typeof(IDictionary<,>))
+                        t.IsGenericType() &&
+                        t.GetGenericTypeDefinition() == typeof(IDictionary<,>))
                 .Any(isDict => isDict);
         }
 

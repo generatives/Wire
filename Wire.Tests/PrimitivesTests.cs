@@ -1,145 +1,145 @@
-﻿using System;
-using Xunit;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Wire.Tests
 {
-    
+    [TestClass]
     public class PrimitivesTest : TestBase
     {
-        [Fact]
+        [TestMethod]
         public void CanSerializeTuple1()
         {
             SerializeAndAssert(Tuple.Create("abc"));
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeTuple2()
         {
             SerializeAndAssert(Tuple.Create(1, 123));
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeTuple3()
         {
             SerializeAndAssert(Tuple.Create(1, 2, 3));
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeTuple4()
         {
             SerializeAndAssert(Tuple.Create(1, 2, 3, 4));
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeTuple5()
         {
             SerializeAndAssert(Tuple.Create(1, 2, 3, 4, 5));
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeTuple6()
         {
             SerializeAndAssert(Tuple.Create(1, 2, 3, 4, 5, 6));
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeTuple7()
         {
             SerializeAndAssert(Tuple.Create(1, 2, 3, 4, 5, 6, 7));
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeTuple8()
         {
             SerializeAndAssert(Tuple.Create(1, 2, 3, 4, 5, 6, 7, 8));
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeBool()
         {
             SerializeAndAssert(true);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeGuid()
         {
             SerializeAndAssert(Guid.NewGuid());
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeDateTime()
         {
             SerializeAndAssert(DateTime.UtcNow);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeDecimal()
         {
             SerializeAndAssert(123m);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeDouble()
         {
             SerializeAndAssert(123d);
         }
 
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeByte()
         {
             SerializeAndAssert((byte) 123);
         }
-        [Fact]
+        [TestMethod]
         public void CanSerializeSByte()
         {
             SerializeAndAssert((sbyte)123);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeInt16()
         {
             SerializeAndAssert((short) 123);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeInt64()
         {
             SerializeAndAssert(123L);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeInt32()
         {
             SerializeAndAssert(123);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeUInt16()
         {
             SerializeAndAssert((ushort)123);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeUInt64()
         {
             SerializeAndAssert((ulong)123);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeUInt32()
         {
             SerializeAndAssert((uint)123);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeLongString()
         {
             var s = new string('x',1000);
             SerializeAndAssert(s);
         }
 
-        [Fact]
+        [TestMethod]
         public void CanSerializeString()
         {
             SerializeAndAssert("hello");
@@ -150,7 +150,7 @@ namespace Wire.Tests
             Serialize(expected);
             Reset();
             var res = Deserialize<object>();
-            Assert.Equal(expected, res);
+            Assert.AreEqual(expected, res);
             AssertMemoryStreamConsumed();
         }
     }
