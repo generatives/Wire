@@ -53,6 +53,10 @@
       <Project>{44afcd2c-2220-4b52-817a-bd9c8b600e05}</Project>
       <Name>Wire.Tests.Performance</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Wire\Wire.csproj">
+      <Project>{7af8d2b6-9f1f-4a1c-8673-48e533108385}</Project>
+      <Name>Wire</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

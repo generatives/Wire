@@ -1,3 +1,5 @@
+This is a PCL port of Wire. It does not pass all the tests but it does pass most of the tests related to C# POCO's and should be usable for most standard serialization usecases.
+
 # Wire
 
 A high performance polymorphic serializer for the .NET framework.
