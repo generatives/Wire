@@ -28,7 +28,7 @@ namespace Wire.SerializerFactories
         public override ValueSerializer BuildSerializer(Serializer serializer, Type type,
             ConcurrentDictionary<Type, ValueSerializer> typeMapping)
         {
-            var os = new ObjectSerializer(type);
+            var os = new ObjectSerializer(serializer.Options.FieldSelector, type);
             typeMapping.TryAdd(type, os);
             var methodInfoSerializer = serializer.GetSerializerByType(typeof(MethodInfo));
             var preserveObjectReferences = serializer.Options.PreserveObjectReferences;

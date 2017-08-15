@@ -39,7 +39,7 @@ namespace Wire.SerializerFactories
         public override ValueSerializer BuildSerializer(Serializer serializer, Type type,
             ConcurrentDictionary<Type, ValueSerializer> typeMapping)
         {
-            var exceptionSerializer = new ObjectSerializer(type);
+            var exceptionSerializer = new ObjectSerializer(serializer.Options.FieldSelector, type);
             exceptionSerializer.Initialize((stream, session) =>
             {
                 var exception = Activator.CreateInstance(type);

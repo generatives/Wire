@@ -54,7 +54,7 @@ namespace Wire.SerializerFactories
         public override ValueSerializer BuildSerializer(Serializer serializer, Type type,
             ConcurrentDictionary<Type, ValueSerializer> typeMapping)
         {
-            var arraySerializer = new ObjectSerializer(type);
+            var arraySerializer = new ObjectSerializer(serializer.Options.FieldSelector, type);
 
             var elementType = type.GetElementType();
             var elementSerializer = serializer.GetSerializerByType(elementType);

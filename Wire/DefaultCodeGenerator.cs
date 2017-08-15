@@ -24,7 +24,7 @@ namespace Wire
         public void BuildSerializer([NotNull] Serializer serializer, [NotNull] ObjectSerializer objectSerializer)
         {
             var type = objectSerializer.Type;
-            var fields = type.GetFieldInfosForType();
+            var fields = serializer.Options.FieldSelector.SelectFields(type);
             int preallocatedBufferSize;
             var writer = GetFieldsWriter(serializer, fields, out preallocatedBufferSize);
             var reader = GetFieldsReader(serializer, fields, type);

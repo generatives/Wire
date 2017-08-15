@@ -61,7 +61,7 @@ namespace Wire.SerializerFactories
         public override ValueSerializer BuildSerializer(Serializer serializer, Type type,
             ConcurrentDictionary<Type, ValueSerializer> typeMapping)
         {
-            var x = new ObjectSerializer(type);
+            var x = new ObjectSerializer(serializer.Options.FieldSelector, type);
             typeMapping.TryAdd(type, x);
 
             var keyType = GetKeyType(type);

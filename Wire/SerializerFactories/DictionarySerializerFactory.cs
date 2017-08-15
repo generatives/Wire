@@ -38,7 +38,7 @@ namespace Wire.SerializerFactories
             ConcurrentDictionary<Type, ValueSerializer> typeMapping)
         {
             var preserveObjectReferences = serializer.Options.PreserveObjectReferences;
-            var ser = new ObjectSerializer(type);
+            var ser = new ObjectSerializer(serializer.Options.FieldSelector, type);
             typeMapping.TryAdd(type, ser);
             var elementSerializer = serializer.GetSerializerByType(typeof(DictionaryEntry));
 

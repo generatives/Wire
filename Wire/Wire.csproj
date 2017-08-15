@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Wire</RootNamespace>
-    <AssemblyName>Wire</AssemblyName>
+    <AssemblyName>WirePCL</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IFieldSelector.cs" />
     <Compile Include="Internal\Annotations.cs" />
     <Compile Include="ByteArrayKey.cs" />
     <Compile Include="ByteArrayKeyComparer.cs" />

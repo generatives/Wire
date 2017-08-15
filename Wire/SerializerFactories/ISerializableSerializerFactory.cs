@@ -31,7 +31,7 @@ namespace Wire.SerializerFactories
         public override ValueSerializer BuildSerializer(Serializer serializer, Type type,
             ConcurrentDictionary<Type, ValueSerializer> typeMapping)
         {
-            var serializableSerializer = new ObjectSerializer(type);
+            var serializableSerializer = new ObjectSerializer(serializer.Options.FieldSelector, type);
             typeMapping.TryAdd(type, serializableSerializer);
             ObjectReader reader = (stream, session) =>
             {

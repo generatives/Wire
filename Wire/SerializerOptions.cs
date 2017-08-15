@@ -52,9 +52,11 @@ namespace Wire
         internal readonly ValueSerializerFactory[] ValueSerializerFactories;
         internal readonly bool VersionTolerance;
 
+        internal readonly IFieldSelector FieldSelector;
+
         public SerializerOptions(bool versionTolerance = false, bool preserveObjectReferences = false,
             IEnumerable<Surrogate> surrogates = null, IEnumerable<ValueSerializerFactory> serializerFactories = null,
-            IEnumerable<Type> knownTypes = null)
+            IEnumerable<Type> knownTypes = null, IFieldSelector fieldSelector = null)
         {
             VersionTolerance = versionTolerance;
             Surrogates = surrogates?.ToArray() ?? EmptySurrogates;
@@ -71,6 +73,8 @@ namespace Wire
             }
 
             PreserveObjectReferences = preserveObjectReferences;
+
+            FieldSelector = fieldSelector ?? new DefaultFieldSelector();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Wire.SerializerFactories
             var surrogate =
                 serializer.Options.Surrogates.FirstOrDefault(
                     s => s.To.IsAssignableFrom(type));
-            var objectSerializer = new ObjectSerializer(type);
+            var objectSerializer = new ObjectSerializer(serializer.Options.FieldSelector, type);
             // ReSharper disable once PossibleNullReferenceException
             var fromSurrogateSerializer = new FromSurrogateSerializer(surrogate.FromSurrogate, objectSerializer);
             typeMapping.TryAdd(type, fromSurrogateSerializer);

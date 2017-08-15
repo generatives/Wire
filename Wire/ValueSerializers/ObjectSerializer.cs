@@ -26,7 +26,7 @@ namespace Wire.ValueSerializers
         private ObjectReader _reader;
         private ObjectWriter _writer;
 
-        public ObjectSerializer(Type type)
+        public ObjectSerializer(IFieldSelector fieldSelector, Type type)
         {
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
@@ -38,7 +38,7 @@ namespace Wire.ValueSerializers
             // ReSharper disable once AssignNullToNotNullAttribute
             var typeNameBytes = typeName.ToUtf8Bytes();
 
-            var fields = type.GetFieldInfosForType();
+            var fields = fieldSelector.SelectFields(type);
             var fieldNames = fields.Select(field => field.Name.ToUtf8Bytes()).ToList();
             var versionInfo = TypeEx.GetTypeManifest(fieldNames);
 
